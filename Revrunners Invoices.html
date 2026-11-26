@@ -397,11 +397,11 @@
                     </div>
                     <div class="form-group">
                         <label>Your Email</label>
-                        <input type="email" id="companyEmail" value="Revrunners@outlook.com" placeholder="email@revrunners.co.uk">
+                        <input type="email" id="companyEmail" placeholder="email@revrunners.co.uk">
                     </div>
                     <div class="form-group">
                         <label>Your Phone</label>
-                        <input type="tel" id="companyPhone" value="07415454403" placeholder="07700 900000">
+                        <input type="tel" id="companyPhone" placeholder="07700 900000">
                     </div>
                 </div>
                 <div>
@@ -415,12 +415,18 @@
                         <input type="email" id="clientEmail" placeholder="client@email.com">
                     </div>
                     <div class="form-group">
-                        <label>Registration</label>
-                        <input type="text" id="clientReg" placeholder="Vehicle Registration (e.g. AB12 CDE)">
-                    </div>
-                    <div class="form-group">
                         <label>Invoice Date</label>
                         <input type="date" id="invoiceDate" class="date-input">
+                    </div>
+                    <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-direction: row;">
+                        <div>
+                            <label>Registration</label>
+                            <input type="text" id="registration" placeholder="e.g. AB12 CDE">
+                        </div>
+                        <div>
+                            <label>Mileage</label>
+                            <input type="number" id="mileage" placeholder="e.g. 52450" min="0">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -561,8 +567,9 @@
             const companyPhone = document.getElementById('companyPhone').value || '';
             const clientName = document.getElementById('clientName').value || 'Client';
             const clientEmail = document.getElementById('clientEmail').value || '';
-            const clientReg = document.getElementById('clientReg').value || '';
             const rawDate = document.getElementById('invoiceDate').value;
+            const registration = document.getElementById('registration').value;
+            const mileage = document.getElementById('mileage').value;
             const invoiceNumber = 'INV-' + Date.now().toString().slice(-6);
 
             // Calculate totals and collect items
@@ -581,9 +588,9 @@
             // Store everything the printer needs, including the FORMATTED date
             invoiceData = {
                 companyName, companyEmail, companyPhone,
-                clientName, clientEmail, clientReg,
+                clientName, clientEmail,
                 date: formatDate(rawDate),
-                invoiceNumber, items, subtotal
+                registration, mileage, invoiceNumber, items, subtotal
             };
 
             // Screen preview HTML
@@ -614,7 +621,9 @@
                             <h3 style="font-size: 0.85rem; text-transform: uppercase; margin-bottom: 10px;">BILL TO:</h3>
                             <p style="font-size: 0.95rem; line-height: 1.6;">
                                 <strong style="font-size: 1.1rem; display: block; margin-bottom: 5px;">${clientName}</strong>
-                                ${clientEmail}
+                                ${clientEmail}<br>
+                                Registration: ${registration}<br>
+                                Mileage: ${mileage}
                             </p>
                         </div>
                     </div>
@@ -649,22 +658,8 @@
                         </div>
                     </div>
 
-
-                    <div style="margin-top: 60px; padding-top: 20px; border-top: 1px solid #e0e0e0; background: #f8f9fa; border-radius: 10px; padding: 25px;">
-                        <h3 style="font-size: 0.85rem; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px;">Payment Details</h3>
-                        <p style="font-size: 0.95rem; line-height: 1.8; color: #333;">
-                            <strong>Antony Harkins trading as Revrunners</strong><br>
-                            Monzo bank<br>
-                            Account number: 43993755<br>
-                            Sort Code: 04-00-06
-                        </p>
-                        <p style="font-size: 0.9rem; color: #555; margin-top: 12px;">
-                            In the reference, please put your registration number${clientReg ? ' (' + clientReg + ')' : ''}
-                        </p>
-                    </div>
-
-                    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center;">
-                        <p style="color: #39ff14; font-weight: 600; font-size: 1rem; margin-bottom: 5px;">Thank you for choosing Revrunners</p>
+                    <div style="margin-top: 60px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center;">
+                        <p style="color: #39ff14; font-weight: 600; font-size: 1rem; margin-bottom: 5px;">Thank you for choosing RevRunners Mobile Mechanics!</p>
                         <small style="color: #888; font-size: 0.85rem;">We come to you - Professional automotive services at your location</small>
                     </div>
                 </div>
@@ -812,7 +807,9 @@
             <h3>BILL TO:</h3>
             <p>
                 <strong>${d.clientName}</strong>
-                ${d.clientEmail}
+                ${d.clientEmail}<br>
+                Registration: ${d.registration}<br>
+                Mileage: ${d.mileage}
             </p>
         </div>
     </div>
@@ -838,21 +835,8 @@
         </div>
     </div>
 
-    <div style="margin-top: 60px; padding: 25px; background: #f8f9fa; border-radius: 10px; page-break-inside: avoid;">
-        <h3 style="font-size: 0.85rem; text-transform: uppercase; margin: 0 0 15px 0; letter-spacing: 1px;">Payment Details</h3>
-        <p style="font-size: 0.95rem; line-height: 1.8; color: #333; margin: 0;">
-            <strong>Antony Harkins trading as Revrunners</strong><br>
-            Monzo bank<br>
-            Account number: 43993755<br>
-            Sort Code: 04-00-06
-        </p>
-        <p style="font-size: 0.9rem; color: #555; margin-top: 12px;">
-            In the reference, please put your registration number${d.clientReg ? ' (' + d.clientReg + ')' : ''}
-        </p>
-    </div>
-
     <div class="print-footer">
-        <p>Thank you for choosing Revrunners</p>
+        <p>Thank you for choosing RevRunners Mobile Mechanics!</p>
         <small>We come to you - Professional automotive services at your location</small>
     </div>
 </body>
@@ -902,7 +886,8 @@
                 document.getElementById('companyPhone').value = '';
                 document.getElementById('clientName').value = '';
                 document.getElementById('clientEmail').value = '';
-                document.getElementById('clientReg').value = '';
+                document.getElementById('registration').value = '';
+                document.getElementById('mileage').value = '';
 
                 document.getElementById('itemsContainer').innerHTML = '';
                 itemCount = 0;
