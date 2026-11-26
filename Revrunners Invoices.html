@@ -658,7 +658,18 @@
                         </div>
                     </div>
 
-                    <div style="margin-top: 60px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center;">
+                    <div style="margin-top: 60px; padding: 20px; background: #f8f9fa; border-left: 4px solid #39ff14; border-radius: 10px;">
+                        <h3 style="font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Payment Details</h3>
+                        <p style="font-size: 0.95rem; line-height: 1.7; color: #333;">
+                            Antony Harkins trading as Revrunners<br>
+                            Monzo bank<br>
+                            Account number: 43993755<br>
+                            Sort Code: 04-00-06<br>
+                            Reference: ${registration}
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center;">
                         <p style="color: #39ff14; font-weight: 600; font-size: 1rem; margin-bottom: 5px;">Thank you for choosing RevRunners Mobile Mechanics!</p>
                         <small style="color: #888; font-size: 0.85rem;">We come to you - Professional automotive services at your location</small>
                     </div>
@@ -766,8 +777,28 @@
         font-size: 1.3rem;
         font-weight: 700;
     }
-    .print-footer {
+    .print-payment {
         margin-top: 60px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-left: 4px solid #39ff14;
+        border-radius: 10px;
+    }
+    .print-payment h3 {
+        font-size: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    .print-payment p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        color: #333;
+        margin: 0;
+    }
+    .print-footer {
+        margin-top: 40px;
         padding-top: 20px;
         border-top: 1px solid #e0e0e0;
         text-align: center;
@@ -833,6 +864,17 @@
                 <span>£${d.subtotal.toFixed(2)}</span>
             </div>
         </div>
+    </div>
+
+    <div class="print-payment">
+        <h3>Payment Details</h3>
+        <p>
+            Antony Harkins trading as Revrunners<br>
+            Monzo bank<br>
+            Account number: 43993755<br>
+            Sort Code: 04-00-06<br>
+            Reference: ${d.registration}
+        </p>
     </div>
 
     <div class="print-footer">
