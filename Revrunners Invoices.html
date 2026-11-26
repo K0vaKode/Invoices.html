@@ -808,6 +808,10 @@
     @media print {
         @page { margin: 0; size: auto; }
         body { padding: 40px; }
+        * {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
     }
 </style>
 </head>
@@ -884,19 +888,45 @@
 </body>
 </html>`;
 
-            const printWindow = window.open('', '_blank');
-            if (!printWindow) {
-                alert('Your browser blocked the print window. Please allow pop-ups for this page and try again.');
-                return;
-            }
-            printWindow.document.open();
-            printWindow.document.write(printDoc);
-            printWindow.document.close();
-            printWindow.focus();
-            // Give the document a moment to render before printing
-            setTimeout(function() {
-                printWindow.print();
-            }, 250);
+            // Print via a hidden iframe: no pop-up blockers, and the document is
+            // guaranteed complete (including Payment Details) before printing.
+            const oldFrame = document.getElementById('printFrame');
+            if (oldFrame) oldFrame.remove();
+
+            const printFrame = document.createElement('iframe');
+            printFrame.id = 'printFrame';
+            printFrame.setAttribute('aria-hidden', 'true');
+            printFrame.style.position = 'fixed';
+            printFrame.style.right = '0';
+            printFrame.style.bottom = '0';
+            printFrame.style.width = '0';
+            printFrame.style.height = '0';
+            printFrame.style.border = '0';
+            printFrame.style.visibility = 'hidden';
+            document.body.appendChild(printFrame);
+
+            const frameDoc = printFrame.contentWindow.document;
+            frameDoc.open();
+            frameDoc.write(printDoc);
+            frameDoc.close();
+
+            // Wait until the invoice document has fully loaded, then print,
+            // so nothing (including the payment block) is missing from the PDF.
+            printFrame.onload = function() {
+                setTimeout(function() {
+                    try {
+                        printFrame.contentWindow.focus();
+                        printFrame.contentWindow.print();
+                    } catch (err) {
+                        alert('Printing failed in this browser. Please try again or use another browser.');
+                    }
+                    // Clean up the hidden frame after printing has been handed off
+                    setTimeout(function() {
+                        const f = document.getElementById('printFrame');
+                        if (f) f.remove();
+                    }, 60000);
+                }, 100);
+            };
         }
 
         function saveTemplate() {
